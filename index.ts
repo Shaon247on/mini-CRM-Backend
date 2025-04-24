@@ -1,11 +1,17 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { connection } from './postgres/postgres';
 import userRoutes from './routes/user.route';
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow only your frontend
+    credentials: true                // Optional: allow cookies/headers if needed
+  }));
 
 app.use(express.json());
 
