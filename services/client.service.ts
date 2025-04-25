@@ -1,24 +1,32 @@
-import { User, UserAttributes } from '../models/user.model';
-import bcrypt from 'bcrypt';
+import { Client, ClientAttributes } from "../models/client.model";
 
-export const createUserService = async (userData: UserAttributes) => {
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  const newUser = await User.create({ ...userData, password: hashedPassword });
-  return newUser;
+export const createClientService = async (data: ClientAttributes) => {
+  const newClient = await Client.create(data);
+  return newClient;
 };
 
-export const loginUserService = async (email: string, password: string) => {
-  // Find user by email
-  const user = await User.findOne({ where: { email } });
-  if (!user) {
-    throw new Error('User not found');
-  }
+export const getClientsByCreatorIdService = async (creatorId: number) => {
+  return await Client.findAll({ where: { creatorId } });
+};
 
-  // Compare passwords
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid credentials');
+export const getClientByIdService = async (id: number) => {
+  const client = await Client.findByPk(id);
+  if (!client) {
+    throw new Error("Client not found");
   }
+  return client;
+};
 
-  return user;
+export const updateClientService = async (
+  id: number,
+  data: Partial<ClientAttributes>
+) => {
+  const client = await getClientByIdService(id);
+  await client.update(data);
+  return client;
+};
+
+export const deleteClientService = async (id: number) => {
+  const client = await getClientByIdService(id);
+  await client.destroy();
 };
