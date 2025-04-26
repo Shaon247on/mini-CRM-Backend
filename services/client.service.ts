@@ -1,32 +1,18 @@
-import { Client, ClientAttributes } from "../models/client.model";
 
-export const createClientService = async (data: ClientAttributes) => {
-  const newClient = await Client.create(data);
-  return newClient;
+import { ClientCreationAttributes, Client } from "../models/client.model";
+
+export const createClient = async (data: ClientCreationAttributes) => {
+  return await Client.create(data);
 };
 
-export const getClientsByCreatorIdService = async (creatorId: number) => {
+export const getClientsByCreator = async (creatorId: number | undefined) => {
   return await Client.findAll({ where: { creatorId } });
 };
 
-export const getClientByIdService = async (id: number) => {
-  const client = await Client.findByPk(id);
-  if (!client) {
-    throw new Error("Client not found");
-  }
-  return client;
+export const updateClient = async (id: number, data: Partial<ClientCreationAttributes>, creatorId: number | undefined) => {
+  return await Client.update(data, { where: { id, creatorId } });
 };
 
-export const updateClientService = async (
-  id: number,
-  data: Partial<ClientAttributes>
-) => {
-  const client = await getClientByIdService(id);
-  await client.update(data);
-  return client;
-};
-
-export const deleteClientService = async (id: number) => {
-  const client = await getClientByIdService(id);
-  await client.destroy();
+export const deleteClient = async (id: number, creatorId: number | undefined) => {
+  return await Client.destroy({ where: { id, creatorId } });
 };

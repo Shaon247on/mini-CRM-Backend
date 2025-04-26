@@ -1,15 +1,31 @@
+import { Router } from "express";
+import * as clientController from "../controllers/client.controller";
+import { authenticate } from "../middlewares/auth.middleware";
 
-import express from 'express';
-import { createUser, loginUser } from '../controllers/user.controller';
-import { validate } from '../middlewares/validate.middleware';
-import { createUserSchema, loginUserSchema } from '../schemas/user.schema';
+const router = Router();
 
-const router = express.Router();
-
-// User registration route
-router.post('/register', validate(createUserSchema), createUser);
-
-// User login route
-router.post('/login', validate(loginUserSchema), loginUser);
+router.post("/clients", authenticate, clientController.create);
+router.get("/clients", authenticate, clientController.getByUser);
+router.put("/clients/:id", authenticate, clientController.update);
+router.delete("/clients/:id", authenticate, clientController.remove);
 
 export default router;
+
+// Expected Payloads
+// POST /clients
+// {
+//   name: "John Doe",
+//   email: "john@example.com",
+//   phone: "017xxxxxxxx",
+//   company: "Acme Inc.",
+//   notes: "Important client"
+// }
+
+// PUT /clients/:id (e.g. /clients/3)
+// Same as POST with updated values.
+
+// DELETE /clients/:id
+// No body required.
+
+// GET /clients
+// No body required; JWT user ID used internally.

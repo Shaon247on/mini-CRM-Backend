@@ -1,23 +1,23 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../postgres/postgres';
-import { User } from './user.model';
+import { DataTypes, Model, Optional } from "sequelize";
+import {sequelize} from "../postgres/postgres"; // Adjust the import path as necessary
+import {User} from "./user.model";
 
-// Define attributes
-export interface ClientAttributes {
-  id?: number;
+interface ClientAttributes {
+  id: number;
   name: string;
   email: string;
   phone: string;
   company?: string;
   notes?: string;
-  creatorId: number; // FK to User
+  creatorId: number;
 }
 
-// Allow partial fields for creation
-export type ClientCreationAttributes = Optional<ClientAttributes, 'id' | 'company' | 'notes'>;
+interface ClientCreationAttributes extends Optional<ClientAttributes, "id" | "notes" | "company"> {}
 
-// Define Client model class
-export class Client extends Model<ClientAttributes, ClientCreationAttributes> implements ClientAttributes {
+class Client
+  extends Model<ClientAttributes, ClientCreationAttributes>
+  implements ClientAttributes
+{
   public id!: number;
   public name!: string;
   public email!: string;
@@ -27,52 +27,24 @@ export class Client extends Model<ClientAttributes, ClientCreationAttributes> im
   public creatorId!: number;
 }
 
-// Initialize the model
 Client.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
     email: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: { isEmail: true },
     },
-    phone: {
-      type: DataTypes.STRING(15),
-      allowNull: false,
-    },
-    company: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    notes: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    creatorId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: User,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
-    },
+    phone: { type: DataTypes.STRING, allowNull: false },
+    company: { type: DataTypes.STRING, allowNull: true },
+    notes: { type: DataTypes.TEXT, allowNull: true },
+    creatorId: { type: DataTypes.INTEGER, allowNull: false },
   },
-  {
-    sequelize,
-    modelName: 'Client',
-    tableName: 'clients',
-    timestamps: true,
-  }
+  { sequelize, modelName: "Client" }
 );
 
-// Association
-Client.belongsTo(User, { foreignKey: 'creatorId', as: 'creator' });
-User.hasMany(Client, { foreignKey: 'creatorId', as: 'clients' });
+Client.belongsTo(User, { foreignKey: "creatorId", as: "creator" });
+User.hasMany(Client, { foreignKey: "creatorId", as: "clients" });
+
+export {ClientCreationAttributes, ClientAttributes, Client};

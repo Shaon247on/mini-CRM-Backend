@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connection } from './postgres/postgres';
 import userRoutes from './routes/user.route';
+import clientRoutes from './routes/client.route';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
+app.use('/api/clients', clientRoutes);
 
 
 
