@@ -33,8 +33,8 @@ app.get('/', (req: Request, res: Response) => {
 
 // // Routes
 
-app.use('/api/users', userRoutes);
-app.use('/api', clientRoutes);
+// app.use('/api/users', userRoutes);
+// app.use('/api', clientRoutes);
 
 
 const PORT = process.env.PGPORT || 50809;
