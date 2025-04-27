@@ -21,7 +21,7 @@ app.use('/api/', clientRoutes);
 
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PGPORT || 5432;
 app.listen(PORT, () => {
     console.log(`server is running on port: ${PORT}`);
 })

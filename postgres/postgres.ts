@@ -3,22 +3,22 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const {
-    DB_NAME,
-    DB_USERNAME,
-    DB_PASSWORD,
-    DB_HOST,
+  POSTGRES_USER,
+    PGUSER,
+    PGPASSWORD,
+    PGHOST,
     DB_DIALECT,
-    DB_PORT,
+    PGPORT,
   } = process.env;
 
-  if (!DB_NAME || !DB_USERNAME || !DB_PASSWORD || !DB_HOST || !DB_DIALECT) {
+  if (!POSTGRES_USER || !PGUSER || !PGPASSWORD || !PGHOST || !DB_DIALECT) {
     throw new Error("Missing required database environment variables");
   }
   
 
-const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-  host: DB_HOST,
-  port: DB_PORT ? Number(DB_PORT) : 5432,
+const sequelize = new Sequelize(PGUSER, PGUSER, PGPASSWORD, {
+  host: PGHOST,
+  port: PGPORT ? Number(PGPORT) : 5432,
   dialect: DB_DIALECT as any,
   logging: false,
 });
