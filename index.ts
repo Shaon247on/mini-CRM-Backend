@@ -37,7 +37,7 @@ app.get('/', (req: Request, res: Response) => {
 // app.use('/api', clientRoutes);
 
 
-const PORT = process.env.PGPORT || 50809;
+const PORT = 50809;
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
