@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 // import cors from 'cors';
-import { connection } from './postgres/postgres';
+// import { connection } from './postgres/postgres';
 import userRoutes from './routes/user.route';
 import clientRoutes from './routes/client.route';
 dotenv.config();
@@ -45,5 +45,5 @@ app.listen(PORT, () => {
 
 
 
-connection();
+// connection();
 
