@@ -17,9 +17,28 @@ export const create = async (req: Request, res: Response) => {
 
 export const getByUser = async (req: Request, res: Response) => {
   try {
-    const creatorId = (req as any).body.creatorId;
-    const clients = await clientService.getClientsByCreator(creatorId);
+    const creatorId = req.query.creatorId as string; // Get creatorId from the query string
+    const clients = await clientService.getClientsByCreator(Number(creatorId));
     res.json(clients);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params; // Get the client ID from the URL parameters
+    const creatorId = req.query.creatorId as string; // Get creatorId from the query string
+
+    // Fetch the client by ID and ensure the creatorId matches the client's creatorId
+    const client = await clientService.getClientById(Number(id), Number(creatorId));
+
+    if (!client) {
+      res.status(404).json({ error: "Client not found" });
+      return
+    }
+
+    res.json(client);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

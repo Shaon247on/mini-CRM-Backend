@@ -1,11 +1,13 @@
 import { Router } from "express";
-import * as clientController from "../controllers/client.controller";
+// import * as clientController from "../controllers/client.controller";
+import * as clientController from "../controllers/client.controller"
 import { authenticate } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 router.post("/clients", authenticate, clientController.create);
 router.get("/clients", authenticate, clientController.getByUser);
+router.get("/clients/:id", authenticate, clientController.getById);
 router.put("/clients/:id", authenticate, clientController.update);
 router.delete("/clients/:id", authenticate, clientController.remove);
 
