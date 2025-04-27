@@ -36,9 +36,9 @@ app.use('/api/users', userRoutes);
 app.use('/api', clientRoutes);
 
 // Server Start
-const PORT = process.env.PGPORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
-});
+// const PORT = process.env.PGPORT || 8000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port: ${PORT}`);
+// });
 
 connection();
