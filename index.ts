@@ -1,10 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express';
-// import dotenv from 'dotenv';
+import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
 // import cors from 'cors';
-// import { connection } from './postgres/postgres';
-// import userRoutes from './routes/user.route';
-// import clientRoutes from './routes/client.route';
-// dotenv.config();
+import { connection } from './postgres/postgres';
+import userRoutes from './routes/user.route';
+import clientRoutes from './routes/client.route';
+dotenv.config();
 
 const app = express();
 
@@ -26,37 +26,24 @@ const app = express();
 
 app.use(express.json());
 
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('🚀 CRM Mini Server is running successfully!');
-// });
+app.get('/', (req: Request, res: Response) => {
+  res.send('🚀 CRM Mini Server is running successfully!');
+});
 
-const PORT = 8000
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+// // Routes
 
-app.get('/about', (req, res) => {
-  res.send('About route 🎉 ')
-})
+app.use('/api/users', userRoutes);
+app.use('/api', clientRoutes);
+
+
+const PORT = process.env.PGPORT || 50809;
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
 })
 
-// // Routes
-// app.use('/api/users', userRoutes);
-// app.use('/api', clientRoutes);
 
 
-
-// // Server Start
-// const PORT = process.env.PGPORT || 50809;
-// app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port: ${PORT}`);
-// });
-
-// connection();
+connection();
 
