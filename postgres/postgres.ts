@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { DB_DIALECT, DATABASE_URL } = process.env;
+const { DB_DIALECT, DATABASE_PUBLIC_URL } = process.env;
 
-if (!DB_DIALECT || !DATABASE_URL) {
-  throw new Error("❌ Missing required environment variables: DB_DIALECT or DATABASE_URL.");
+if (!DB_DIALECT || !DATABASE_PUBLIC_URL) {
+  throw new Error("❌ Missing required environment variables: DB_DIALECT or DATABASE_PUBLIC_URL.");
 }
 
-const sequelize = new Sequelize(DATABASE_URL, {
+const sequelize = new Sequelize(DATABASE_PUBLIC_URL, {
   dialect: DB_DIALECT as any,
   logging: false,
   dialectOptions: {
