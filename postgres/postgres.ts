@@ -3,25 +3,21 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { NODE_ENV, DATABASE_URL, DB_DIALECT } = process.env;
+const { DB_DIALECT, DATABASE_URL } = process.env;
 
-if (!DATABASE_URL || !DB_DIALECT) {
-  throw new Error("Missing required environment variables");
+if (!DB_DIALECT || !DATABASE_URL) {
+  throw new Error("❌ Missing required environment variables: DB_DIALECT or DATABASE_URL.");
 }
-
-const isProduction = NODE_ENV === "production";
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: DB_DIALECT as any,
   logging: false,
-  dialectOptions: isProduction
-    ? {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      }
-    : {},
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 const connection = async () => {
