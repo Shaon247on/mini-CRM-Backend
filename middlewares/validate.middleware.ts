@@ -1,11 +1,12 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import { Request, Response, NextFunction } from 'express';
 import { ZodSchema } from 'zod';
 
-export const validate = (schema: ZodSchema) => {
-  return (req: VercelRequest, res: VercelResponse): VercelResponse | void => {
+export const validate = (schema: ZodSchema) =>
+  (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
-      return res.status(400).json({ error: result.error.errors });
+      res.status(400).json({ error: result.error.errors });
+      return; 
     }
+    next();
   };
-};
